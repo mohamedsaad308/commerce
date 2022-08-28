@@ -128,3 +128,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
     # ...
 ]
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
+MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

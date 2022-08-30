@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "debug_toolbar",
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,5 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+# CRISPY_TEMPLATE_PACK = 'uni_form'
+LOGIN_URL = '/login'

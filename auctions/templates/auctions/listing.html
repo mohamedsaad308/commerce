@@ -24,7 +24,7 @@
         {% if listing.image %}
         <img src="{{ listing.image.url|default_if_none:'#' }}" class="img-fluid" alt="Responsive image" />
         {% else %}
-        <img width="200" height="200" src="https://via.placeholder.com/500" class="img-fluid" alt="Product image" />
+        <img src="https://via.placeholder.com/500" class="img-fluid" alt="Product image" />
         {% endif %}
       </div>
 

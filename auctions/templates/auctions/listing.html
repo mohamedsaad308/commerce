@@ -16,6 +16,9 @@
   </svg>
   Watchlist
 </a>
+{% if not list.active and request.user == winner %}
+<h1 class="text-center text-success">Congratulations! You won this auction!</h1>
+{% endif %}
 <br />
 <div class="card mt-2 h-30">
   <div class="card-body">
@@ -42,11 +45,52 @@
             <a href="#">{{listing.user}} </a>
           </li>
           <li>Categories: {{listing.categories}}</li>
+          <li><p class="text-muted">Created at: {{listing.created_at}}</p></li>
         </ul>
-        <br />
-        <p class="text-muted">Created at: {{listing.created_at}}</p>
-
         <hr />
+        {% if listing.active %}
+        <h3>Bids</h3>
+        {% if listing.listing_bids.count %}
+        <small class="form-text text-muted"
+          >{{ listing.listing_bids.count }} bids so far, your bid should be greater than ${{ last_bid_value }}</small
+        >
+        {% else %}
+        <small class="form-text text-muted">No bids so far, your bid should be at least ${{ listing.price }}</small>
+        {% endif %}
+
+        <form action="{% url 'create-bid' listing.id %}" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <input autofocus="" class="form-control" type="number" min="0" name="bid" placeholder="Place your bid" />
+            {% if request.session.message %}
+            <small class="text-danger form-text">{{ request.session.message }}</small>
+            {% endif %}
+          </div>
+          <input class="btn btn-primary" type="submit" value="Place Bid" />
+        </form>
+        <hr />
+        <div class="auction">
+          <h3>Auction Details</h3>
+          <ul>
+            <li>Status: Running</li>
+            <li>Winner: No winner yet</li>
+            <li>Highest Bid: {{ last_bid_value }}</li>
+          </ul>
+          {% if listing.user == request.user %}
+          <a href="{% url 'close-auction' listing.id %}" class="btn btn-danger">Close auction</a>
+          {% endif %}
+        </div>
+
+        {% else %}
+        <div class="auction">
+          <h3>Auction Details</h3>
+          <ul>
+            <li>Status: Closed</li>
+            <li>Winner: {{ winner }}</li>
+            <li>Highest Bid: {{ last_bid_value }}</li>
+          </ul>
+        </div>
+        {% endif %}
       </div>
     </div>
   </div>

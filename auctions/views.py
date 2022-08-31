@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Watchlist
+from .models import User, Listing, Watchlist, Bid
 from .forms import CategoryForm, ListingForm
 
 def index(request):
@@ -95,7 +95,15 @@ def add_listing(request):
 @login_required
 def show_listing(request, id):
     listing = get_object_or_404(Listing, id=id)
-    return render(request, 'auctions/listing.html', {"listing" : listing})
+    context = {"listing" : listing}
+
+    last_bid = listing.listing_bids.order_by('-bid_value').first()
+    if last_bid:
+        context['last_bid_value'] = last_bid.bid_value
+        context['winner'] = last_bid.user
+    else:
+        context['winner'] = listing.user
+    return render(request, 'auctions/listing.html', context)
 
 @login_required
 def edit_watchlist(request, id):
@@ -109,3 +117,31 @@ def edit_watchlist(request, id):
 
     
 
+@login_required
+def create_bid(request, id):
+    if request.method == "POST":
+        current_bid_value = int(request.POST["bid"])
+        last_bid = Bid.objects.filter(listing_id=id).order_by('-bid_value').first()
+        if last_bid:
+            if current_bid_value <= last_bid.bid_value:
+                request.session["message"] = f"Your bid shoud be greater than the last bid (${last_bid.bid_value})"
+                return redirect('show-listing', id) 
+        else:
+            listing = get_object_or_404(Listing, id=id)
+            if listing:
+                if current_bid_value < listing.price:
+                    request.session["message"] = f"Your bid shoud be equal or greater than the starting bid (${listing.price})"
+                    return redirect('show-listing', id)
+
+        bid = Bid(bid_value=current_bid_value, listing_id=id, user=request.user)
+        bid.save()
+        if request.session["message"]:
+            del request.session["message"]
+        return redirect('show-listing', id)  
+
+@login_required
+def close_auction(request, id):
+    listing = get_object_or_404(Listing, id=id)
+    listing.active = False
+    listing.save()
+    return redirect('show-listing', id) 

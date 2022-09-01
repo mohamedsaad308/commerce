@@ -1,0 +1,34 @@
+{% extends "auctions/layout.html" %} {% block title %} Watchlist {% endblock title %} {% block body %}
+<h2>Watchlist</h2>
+
+{% for listing in listings %}
+<div class="card mt-2 h-30">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-4">
+        {% if listing.image %}
+        <img
+          width="200"
+          height="200"
+          src="{{ listing.image.url|default_if_none:'#' }}"
+          class="img-fluid"
+          alt="Responsive image"
+        />
+        {% else %}
+        <img width="200" height="200" src="/media/images/image200*200.png" class="img-fluid" alt="Product image" />
+        {% endif %}
+      </div>
+
+      <div class="col-md-8">
+        <a href="{% url 'show-listing' listing.id %}">{{ listing.title }}</a>
+        <h2>{{ listing.title }}</h2>
+
+        <b>Price:</b>
+        ${{ listing.price }}
+        <br />
+        <p class="text-muted">created at: {{ listing.created_at }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %} {% endblock body %}

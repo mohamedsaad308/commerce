@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block title %}
   Add Listing
-{% endblock %}
+{% endblock title %}
 {% block body %}
   <div style="margin:20px">
     <h2>Create Listing</h2>
@@ -16,6 +16,5 @@
 
       {{ form|crispy }}
       <input class="btn btn-primary mt-2" type="submit" value="Create">
-    </form>
   </div>
-{% endblock %}
+{% endblock body %}

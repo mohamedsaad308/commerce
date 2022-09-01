@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Watchlist, Bid, Comment
+from .models import User, Listing, Watchlist, Bid, Comment, Watchlist
 from .forms import CategoryForm, ListingForm
 
 def index(request):
@@ -154,3 +154,11 @@ def create_comment(request, id):
         comment = Comment(text=text, user=request.user, listing_id=id)
         comment.save()
         return redirect('show-listing', id)
+@login_required
+def watchlist(request):
+    watchlist = Watchlist.objects.filter(user=request.user)
+    listings = []
+    for w in watchlist:
+        listings.append(w.listing)
+
+    return render(request, "auctions/watchlist.html", {"listings": listings})

@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Watchlist, Bid, Comment, Watchlist
+from .models import Category, User, Listing, Watchlist, Bid, Comment, Watchlist
 from .forms import CategoryForm, ListingForm
 
 def index(request):
@@ -64,18 +64,6 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
-@login_required
-def add_category(request):
-    if request.method == 'POST':
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return render(request, 'auctions/add-category.html', {'form': form, 'message': "Form saved successflly"})
-
-    else:
-        form = CategoryForm()
-
-    return render(request, 'auctions/add-category.html', {'form': form})
 
 @login_required
 def add_listing(request):
@@ -154,6 +142,7 @@ def create_comment(request, id):
         comment = Comment(text=text, user=request.user, listing_id=id)
         comment.save()
         return redirect('show-listing', id)
+
 @login_required
 def watchlist(request):
     watchlist = Watchlist.objects.filter(user=request.user)
@@ -162,3 +151,17 @@ def watchlist(request):
         listings.append(w.listing)
 
     return render(request, "auctions/watchlist.html", {"listings": listings})
+
+@login_required
+def categories(request):
+    categories = Category.objects.all()
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('categories')
+
+    else:
+        form = CategoryForm()
+
+    return render(request, 'auctions/categories.html', {"form": form, "categories":categories})

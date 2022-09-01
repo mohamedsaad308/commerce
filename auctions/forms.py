@@ -9,4 +9,4 @@ class CategoryForm(ModelForm):
 class ListingForm(ModelForm):
     class Meta:
         model = Listing
-        fields = ['title', 'description', 'categories', 'price', 'image']
+        fields = ['title', 'description', 'category', 'price', 'image']

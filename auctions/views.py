@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from django.contrib.auth.decorators import login_required
 
-from .models import User, Listing, Watchlist, Bid
+from .models import User, Listing, Watchlist, Bid, Comment
 from .forms import CategoryForm, ListingForm
 
 def index(request):
@@ -92,11 +92,12 @@ def add_listing(request):
 
     return render(request, 'auctions/add-listing.html', {'form': form})  
 
-@login_required
+
 def show_listing(request, id):
     listing = get_object_or_404(Listing, id=id)
+    comments = listing.listing_comments.all()
     context = {"listing" : listing}
-
+    context['comments'] = comments
     last_bid = listing.listing_bids.order_by('-bid_value').first()
     if last_bid:
         context['last_bid_value'] = last_bid.bid_value
@@ -144,4 +145,12 @@ def close_auction(request, id):
     listing = get_object_or_404(Listing, id=id)
     listing.active = False
     listing.save()
-    return redirect('show-listing', id) 
+    return redirect('show-listing', id)
+
+@login_required
+def create_comment(request, id):
+    if request.method == "POST":
+        text = request.POST['comment']
+        comment = Comment(text=text, user=request.user, listing_id=id)
+        comment.save()
+        return redirect('show-listing', id)

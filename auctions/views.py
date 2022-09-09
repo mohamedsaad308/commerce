@@ -124,9 +124,8 @@ def create_bid(request, id):
 
         bid = Bid(bid_value=current_bid_value, listing_id=id, user=request.user)
         bid.save()
-        if request.session["message"]:
-            del request.session["message"]
-        return redirect('show-listing', id)  
+        request.session.pop("message", None)
+    return redirect('show-listing', id)  
 
 @login_required
 def close_auction(request, id):

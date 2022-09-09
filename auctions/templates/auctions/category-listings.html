@@ -1,10 +1,6 @@
-{% extends "auctions/layout.html" %} {% block body %}
-{% block title %}
-{{ category }}'Listings
-{% endblock title %}
+{% extends "auctions/layout.html" %} {% block body %} {% block title %} {{ category }}'Listings {% endblock title %}
 <h2>{{ category }}'Listings</h2>
-
-{% for listing in listings %}
+{% if listings|length %} {% for listing in listings %}
 <div class="card mt-2 h-30">
   <div class="card-body">
     <div class="row">
@@ -23,9 +19,7 @@
       </div>
 
       <div class="col-md-8">
-        <a href="{% url 'show-listing' listing.id %}">{{ listing.title }}</a>
-        <h2>{{ listing.title }}</h2>
-
+        <h3><a href="{% url 'show-listing' listing.id %}">{{ listing.title }}</a></h3>
         <b>Price:</b>
         ${{ listing.price }}
         <br />
@@ -34,4 +28,6 @@
     </div>
   </div>
 </div>
-{% endfor %} {% endblock body %}
+{% endfor %} {% else %}
+<h2>There are no active items under this category</h2>
+{% endif %} {% endblock body %}

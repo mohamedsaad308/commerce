@@ -20,11 +20,12 @@
       </div>
 
       <div class="col-md-8">
-        <a href="{% url 'show-listing' listing.id %}">{{ listing.title }}</a>
-        <h2>{{ listing.title }}</h2>
+        <h3><a href="{% url 'show-listing' listing.id %}">{{ listing.title }}</a></h3>
 
         <b>Price:</b>
         ${{ listing.price }}
+        <br />
+        <b>Price:</b>: <small>{{ listing.description }}</small>
         <br />
         <p class="text-muted">created at: {{ listing.created_at }}</p>
       </div>

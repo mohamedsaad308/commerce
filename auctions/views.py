@@ -152,7 +152,6 @@ def watchlist(request):
 
     return render(request, "auctions/watchlist.html", {"listings": listings})
 
-@login_required
 def categories(request):
     categories = Category.objects.all()
     if request.method == 'POST':
@@ -165,3 +164,11 @@ def categories(request):
         form = CategoryForm()
 
     return render(request, 'auctions/categories.html', {"form": form, "categories":categories})
+
+def category_listings(request, id):
+    context = {}
+    category = Category.objects.get(id = id).name
+    context["category"] = category
+    listings = Listing.objects.filter(category_id=id, active=True)
+    context['listings'] = listings
+    return render(request, 'auctions/category-listings.html', context)

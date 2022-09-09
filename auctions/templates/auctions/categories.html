@@ -10,12 +10,13 @@
     <ul>
       {% for category in categories %}
         <li>
-        <a href="#">{{ category.name }}</a>
+        <a href="{% url 'category-listings' category.id %}">{{ category.name }}</a>
         </li>
       {% endfor %}
     </ul>
   </div>
 </div>
+{% if request.user.is_authenticated %}
   <div class="row ml-3">
     <div class="col-md-12 ">
     <h3>Create new category</h3>
@@ -28,8 +29,10 @@
       {% csrf_token %}
 
       {{ form|crispy }}
-      <input class="btn btn-primary mt-2" type="submit" value="Create">
+      <input class="btn btn-primary mt-2" type="submit" value="Create"/>
       </form>
       </div>
   </div>
+    
+  {% endif %}
 {% endblock body %}

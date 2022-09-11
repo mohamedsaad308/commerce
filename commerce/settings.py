@@ -94,9 +94,9 @@ else:
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': env('POSTGRES_NAME'), 
             'USER': env('POSTGRES_USER'), 
-            'PASSWORD': 'POSTGRES_PASSWORD',
-            'HOST': 'POSTGRES_HOST', 
-            'PORT': 'POSTGRES_PORT',
+            'PASSWORD': env('POSTGRES_PASSWORD'),
+            'HOST': env('POSTGRES_HOST'), 
+            'PORT': env('POSTGRES_PORT'),
         }
     }
 

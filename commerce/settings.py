@@ -162,4 +162,4 @@ else:
     AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
     AWS_LOCATION = "media"
     AWS_QUERYSTRING_AUTH = False
-    AWS_DEFAULT_ACL = 'public-read'
+    AWS_DEFAULT_ACL = None

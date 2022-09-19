@@ -29,7 +29,7 @@ SECRET_KEY = env('SECRET_KEY')
 
 DEBUG = env.bool("DEBUG")
 
-ALLOWED_HOSTS = ["cs50-ecommerce.herokuapp.com"]
+ALLOWED_HOSTS = ["cs50-ecommerce.herokuapp.com", '127.0.0.1']
 
 
 # Application definition

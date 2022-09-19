@@ -25,7 +25,11 @@
     <div class="row">
       <div class="col-md-8">
         {% if listing.image %}
-        <img src="{{ listing.image.url|default_if_none:'#' }}" class="img-fluid" alt="Responsive image" />
+        <img
+          src="{{ listing.image.url|default_if_none:'#' }}"
+          class="img-fluid"
+          alt="https://via.placeholder.com/300"
+        />
         {% else %}
         <img src="https://via.placeholder.com/500" class="img-fluid" alt="Product image" />
         {% endif %}
@@ -59,7 +63,8 @@
           <form action="{% url 'create-bid' listing.id %}" method="post">
             {% csrf_token %} {% if listing.listing_bids.count %}
             <small class="form-text text-muted"
-              >{{ listing.listing_bids.count }} bids so far, your bid should be greater than ${{ last_bid_value }}</small
+              >{{ listing.listing_bids.count }} bids so far, your bid should be greater than ${{ last_bid_value
+              }}</small
             >
             {% else %}
             <small class="form-text text-muted">No bids so far, your bid should be at least ${{ listing.price }}</small>

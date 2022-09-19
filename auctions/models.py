@@ -16,7 +16,7 @@ class Listing(models.Model):
     description = models.TextField()
     price = models.PositiveIntegerField(validators=[MinValueValidator(1)])
     active = models.BooleanField(default=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=True, related_name='category_listings')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE,  related_name='category_listings', null=True)
     image = models.ImageField(upload_to='images/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
